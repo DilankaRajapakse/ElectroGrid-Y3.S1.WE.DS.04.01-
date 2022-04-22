@@ -1,14 +1,12 @@
 package model; 
 import java.sql.*; 
+import util.DB_Connector;
 
 public class Maintenance 
 { //connect to the DB
-	DB_Connect DB = new DB_Connect();
+	DB_Connector DB = new DB_Connector();
 	
-	
-	
-	
-	
+
 	/********************Read Maintenance*****************************/
 	public String readMaintenance() 
 	 { 
@@ -21,12 +19,12 @@ public class Maintenance
 	 {return "Error while connecting to the database for reading."; }
 	 
 	 // Prepare the html table to be displayed
-	 output = "<table border='1'><tr><th>Complaint ID</th><th>Grid Name</th>" +
+	 output = "<table border='1'><tr><th>Area</th><th>Grid Name</th>" +
 	 "<th>Type</th>" + 
 	 "<th>Complaint</th>" ;
 	 //"<th>Update</th><th>Remove</th></tr>"; 
 	 
-	 String query = "select * from Maintenance"; 
+	 String query = "select * from maintenance"; 
 	 Statement stmt = con.createStatement(); 
 	 ResultSet rs = stmt.executeQuery(query); 
 	 
@@ -34,10 +32,10 @@ public class Maintenance
 	 while (rs.next()) 
 	 { 
 	 String compID = Integer.toString(rs.getInt("compID")); 
-	 String compCode = rs.getString("compCode"); 
+	 String area = rs.getString("compCode"); 
 	 String gridName = rs.getString("gridName"); 
 	 String compType = Double.toString(rs.getDouble("compType")); 
-	 String compDesc = rs.getString("compDesc"); 
+	 String complaint = rs.getString("complaint"); 
 	 
 	 
 	 // Add into the html table
@@ -168,7 +166,7 @@ public String updateMaintainance(String ID, String code, String name, String typ
 	
 	
 	/***********Getting one detail***************/
-	public String rEmp(String branch)
+	public String rComp(String branch)
 	 {
 			String output = "";
 			 try
