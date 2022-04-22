@@ -3,7 +3,9 @@ import java.sql.*;
 import util.DB_Connector;
 
 public class Maintenance 
-{ //connect to the DB
+{ 
+	
+	//connect to the DB
 	DB_Connector DB = new DB_Connector();
 	
 
@@ -39,10 +41,10 @@ public class Maintenance
 	 
 	 
 	 // Add into the html table
-	 output += "<tr><td>" + compCode + "</td>"; 
+	 output += "<tr><td>" + area + "</td>"; 
 	 output += "<td>" + gridName + "</td>"; 
 	 output += "<td>" + compType + "</td>"; 
-	 output += "<td>" + compDesc + "</td>"; 
+	 output += "<td>" + complaint + "</td>"; 
 	 // buttons
 	 //output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>" + "<td><form method='post' action='items.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
 	 //+ "<input name='itemID' type='hidden' value='" + itemID 
@@ -66,9 +68,12 @@ public class Maintenance
 	
 	
 	
-public String insertMaintenance(String code, String name, String type, String desc) 
+public String insertMaintenance(String code, String name, String type, String desc, String price) 
  { 
-
+	String output = "";
+	try {
+	Connection con = DB.connect();
+	
  // create a prepared statement
  String query = " insert into items (`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`)"
  + " values (?, ?, ?, ?, ?)"; 
