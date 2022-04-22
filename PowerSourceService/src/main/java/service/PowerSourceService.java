@@ -1,6 +1,7 @@
 package service;
 
 import model.PowerSource;
+import service.InterServiceCommunication;
 
 //For REST Service
 import javax.ws.rs.*;
@@ -88,5 +89,16 @@ public class PowerSourceService {
 		result=ps.readSourceEmp(id);
 		return result.toString();
 		
+	}
+	
+	//Interservice communication with employee
+	@GET
+	@Path("/Power/{nic}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readSource(@PathParam("nic") String nic)
+	 {
+		 
+		 return (new InterServiceCommunication().EmployeeDetails("/" + nic)).toString();
+		 //return emp.rEmp(br);
 	}
 }

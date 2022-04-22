@@ -124,7 +124,7 @@ public class EmployeeService {
 	
 	/*Note use for Inter Service Communication for Getting Employee Data by providing NIC*/
 	@GET
-	@Path("/{nic}")
+	@Path("/Head/{nic}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String readEmpSource(@PathParam("nic") String id) {
 		
