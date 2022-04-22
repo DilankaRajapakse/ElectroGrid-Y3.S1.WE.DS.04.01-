@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import model.Employee;
+import service.InterServiceCom;
 
 @Path("/Employee")
 public class EmployeeService {
@@ -121,7 +122,31 @@ public class EmployeeService {
 			return output;
 	}
 	
+	/*Note use for Inter Service Communication for Getting Employee Data by providing NIC*/
+	@GET
+	@Path("/{nic}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readEmpSource(@PathParam("nic") String id) {
+		
+		JsonObject result = null;
+		
+		result=emp.readEmp(id);
+		return result.toString();
+		
+	}
 	
+	
+	//Do not use the Below fucntion
+	/*************************Inter-Service Communication for Power Source********************/
+	@GET
+	@Path("/Source/{eng}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readSource(@PathParam("eng") String id)
+	 {
+		 
+		 return (new InterServiceCom().PowerSource("/" + id)).toString();
+		 //return emp.rEmp(br);
+	}
 	
 	
 }

@@ -36,8 +36,14 @@
   	<dependency>
   		<groupId>com.sun.jersey</groupId>
   		<artifactId>jersey-server</artifactId>
-  		<version>1.19.4</version>
+  		<version>1.8</version>
   	</dependency>
+  	
+  	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-client</artifactId>
+		<version>1.19.4</version>
+	</dependency>
   	
   	<dependency>
   		<groupId>org.json</groupId>
@@ -62,6 +68,7 @@
 	 <artifactId>jsoup</artifactId>
 	 <version>1.8.1</version>
 	</dependency>
+	
   	
   </dependencies>
 </project>

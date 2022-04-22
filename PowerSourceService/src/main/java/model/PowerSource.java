@@ -1,6 +1,8 @@
 package model;
 
 import util.DB_Connector;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import java.sql.*;
 
 
@@ -172,4 +174,45 @@ public class PowerSource {
 		}
 		return output;
 	}
+	
+	/**Reading Source by the Employee Id**/
+	public JsonObject readSourceEmp(String id)
+	{
+		JsonObject output = null;
+		
+		try
+		{
+			con = DB_Connector.connect();
+			if (con == null) {
+				output=new JsonObject();
+				output.addProperty("MESSAGE", "Database connection failed for reading data.");
+				//return "Database connection failed for reading data.";
+			}
+			//
+			String query = "select * from powersource where Head_Engineer='"+id+"'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next())
+			{
+				JsonObject dbObject = new JsonObject();
+				dbObject.addProperty("name", rs.getString("Name"));
+				dbObject.addProperty("address", rs.getString("Address"));
+				output=dbObject;
+				
+			}
+			con.close();
+			
+		}
+		catch (Exception e)
+		{
+			output=new JsonObject();
+			output.addProperty("MESSAGE","Error while reading the power source details.");
+			//output = "Error while reading the power source details.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
 }

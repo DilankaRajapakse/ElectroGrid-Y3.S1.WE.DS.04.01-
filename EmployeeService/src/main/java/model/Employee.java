@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import com.google.gson.JsonObject;
+
 import util.DB_Connector;
 
 
@@ -275,5 +277,49 @@ public class Employee {
 			 
 			 return output;
 	 }
+	
+	/*Reading Employees by ID*/
+	
+	public JsonObject readEmp(String id)
+	{
+		JsonObject output = null;
+		
+		try
+		{
+			Connection con = DB.connect();
+			if (con == null) {
+				output=new JsonObject();
+				output.addProperty("MESSAGE", "Database connection failed for reading Employee data.");
+				//return "Database connection failed for reading data.";
+			}
+			//
+			String query = "select * from Employee where nic='"+id+"'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next())
+			{
+				JsonObject dbObject = new JsonObject();
+				dbObject.addProperty("Employee Name", rs.getString("name"));
+				dbObject.addProperty("Employee Address", rs.getString("address"));
+				dbObject.addProperty("Employee Phone", rs.getInt("phone"));
+				
+				
+				output=dbObject;
+				
+			}
+			con.close();
+			
+		}
+		catch (Exception e)
+		{
+			output=new JsonObject();
+			output.addProperty("MESSAGE","Error while reading the employee details.");
+			//output = "Error while reading the power source details.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 	
 }

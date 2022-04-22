@@ -77,4 +77,16 @@ public class PowerSourceService {
 		String output = ps.deletePowerSource(ID);
 		return output;
 	}
+	/*Inter-service communication between the employee*/
+	@GET
+	@Path("/{eng_id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readEmpSource(@PathParam("eng_id") String id) {
+		
+		JsonObject result = null;
+		
+		result=ps.readSourceEmp(id);
+		return result.toString();
+		
+	}
 }
