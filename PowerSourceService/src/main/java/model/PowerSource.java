@@ -9,6 +9,8 @@ import java.sql.*;
 public class PowerSource {
 	
 	private static Connection con = null;
+	
+	//insert 
 	public String insertPowerSource(String pname, String paddress, String province, String type, String powergenerated, String maint_day,String head) {
 		String output = "";
 		
@@ -48,6 +50,7 @@ public class PowerSource {
 		return output;
 	}
 	
+	//Read all the power sources
 	public String readPowerSource()
 	{
 		String output = "";
@@ -107,6 +110,7 @@ public class PowerSource {
 		return output;
 	}
 	
+	//Update
 	public String updatePowerSource(String ID, String name, String address, String province, String type, String powerGen, String maint_day,String head)
 	{
 		String output = "";
@@ -144,6 +148,7 @@ public class PowerSource {
 		return output;
 	}
 	
+	//Delete
 	public String deletePowerSource(String ID)
 	{
 		String output = "";

@@ -20,6 +20,7 @@ import org.jsoup.nodes.Document;
 public class PowerSourceService {
 	PowerSource ps = new PowerSource();
 	
+	//Insert
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -36,6 +37,7 @@ public class PowerSourceService {
 		return output;
 	}
 	
+	//Read everything
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
@@ -43,6 +45,7 @@ public class PowerSourceService {
 		return ps.readPowerSource();
 	}
 	
+	//Update
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -65,6 +68,7 @@ public class PowerSourceService {
 		return output;
 	}
 	
+	//Delete
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
