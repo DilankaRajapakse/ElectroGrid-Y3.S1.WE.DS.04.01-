@@ -91,12 +91,7 @@ public class PowerSource {
 				output += "<td>" + Maintenance_Day + "</td>";
 				output += "<td>" + Head_Engineer + "</td>";
 				
-				// buttons
-				output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"
-				+ "<td><form method='post' action=''>"
-				+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
-				+ "<input name='ID' type='hidden' value='" + ID
-				+ "'>" + "</form></td></tr>";
+				
 			}
 			con.close();
 			// Complete the html table
