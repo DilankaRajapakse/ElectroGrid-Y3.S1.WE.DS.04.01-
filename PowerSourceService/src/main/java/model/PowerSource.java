@@ -200,6 +200,10 @@ public class PowerSource {
 				JsonObject dbObject = new JsonObject();
 				dbObject.addProperty("name", rs.getString("Name"));
 				dbObject.addProperty("address", rs.getString("Address"));
+				dbObject.addProperty("province", rs.getString("Province"));
+				dbObject.addProperty("type", rs.getString("Type"));
+				dbObject.addProperty("power", rs.getString("PowerGenerated"));
+				dbObject.addProperty("maintenanceDay", rs.getString("Maintenance_Day"));
 				output=dbObject;
 				
 			}
