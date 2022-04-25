@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -17,10 +19,11 @@ import org.jsoup.parser.Parser;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sun.jersey.spi.container.ContainerRequest;
 
 import model.Employee;
 import service.InterServiceCom;
-
+import util.SecurityFilter;
 @Path("/Employee")
 public class EmployeeService {
 	
@@ -55,7 +58,7 @@ public class EmployeeService {
 	
 	/****************************Read**************************/
 	@GET
-	@Path("/{branch}")
+	@Path("/branch/{branch}")
 	@Produces(MediaType.TEXT_HTML)
 	public String readEmp(@PathParam("branch") String br)
 	 {
@@ -143,7 +146,7 @@ public class EmployeeService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String readSource(@PathParam("eng") String id)
 	 {
-		 
+	
 		 return (new InterServiceCom().PowerSource("/" + id)).toString();
 		 //return emp.rEmp(br);
 	}

@@ -15,17 +15,17 @@ import javax.ws.rs.ext.Provider;
 import com.sun.jersey.core.util.Base64;
 
 @Provider
-public class PowerSourceSecurityFilter implements ContainerRequestFilter {
+public class SecurityFilter implements ContainerRequestFilter{
+	
 	private static final String AUTHORIZATION_HEADER_KEY="Authorization";
 	private static final String AUTHORIZATION_HEADER_PREFIX="Basic ";
-	private static final String SECURED_URL_PREFIX="ElectroGrid/PowerSource";
+	private static final String SECURED_URL_PREFIX="ElectroGrid/Employee";
 	ResponseBuilder builder = null;
 	
 	//if (requestContext.getUriInfo().getPath().contains(SECURED_URL_PREFIX)) {
 	@Override
 	public ContainerRequest filter(ContainerRequest requestContext) {
-		System.out.println("Helllo PowerSource filter");
-		
+		System.out.println("Employee");
 			
 			List<String> authHeader=requestContext.getRequestHeaders().get(AUTHORIZATION_HEADER_KEY);
 			
@@ -33,7 +33,7 @@ public class PowerSourceSecurityFilter implements ContainerRequestFilter {
 			if (authHeader!=null && authHeader.size()>0) {
 				
 				String authToken=authHeader.get(0);
-		
+				System.out.println(authToken);
 				
 				authToken=authToken.replaceFirst(AUTHORIZATION_HEADER_PREFIX, "");
 				String decodedString=Base64.base64Decode(authToken);
@@ -49,7 +49,8 @@ public class PowerSourceSecurityFilter implements ContainerRequestFilter {
 				
 			}
 
-			builder=Response.status(Response.Status.UNAUTHORIZED).entity("Access Denied ");
+			builder=Response.status(Response.Status.UNAUTHORIZED)
+											.entity("Access Denied ");
 			
 			throw new WebApplicationException(builder.build());
 
@@ -57,4 +58,8 @@ public class PowerSourceSecurityFilter implements ContainerRequestFilter {
 		
 		
 	}
+	
+
+	
+
 }
