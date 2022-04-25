@@ -1,241 +1,227 @@
-package model; 
-import java.sql.*; 
+package model;
+
 import util.DB_Connector;
-
-public class Maintenance 
-{ 
-	
-	//connect to the DB
-	DB_Connector DB = new DB_Connector();
-	
-
-	/********************Read Maintenance*****************************/
-	public String readMaintenance() 
-	 { 
-	 String output = ""; 
-	 try
-	 { 
-	 Connection con = DB.connect();
-	 
-	 if (con == null) 
-	 {return "Error while connecting to the database for reading."; }
-	 
-	 // Prepare the html table to be displayed
-	 output = "<table border='1'><tr><th>Area</th><th>Grid Name</th>" +
-	 "<th>Type</th>" + 
-	 "<th>Complaint</th>" ;
-	 //"<th>Update</th><th>Remove</th></tr>"; 
-	 
-	 String query = "select * from maintenance"; 
-	 Statement stmt = con.createStatement(); 
-	 ResultSet rs = stmt.executeQuery(query); 
-	 
-	 // iterate through the rows in the result set
-	 while (rs.next()) 
-	 { 
-	 String compID = Integer.toString(rs.getInt("compID")); 
-	 String area = rs.getString("compCode"); 
-	 String gridName = rs.getString("gridName"); 
-	 String compType = Double.toString(rs.getDouble("compType")); 
-	 String complaint = rs.getString("complaint"); 
-	 
-	 
-	 // Add into the html table
-	 output += "<tr><td>" + area + "</td>"; 
-	 output += "<td>" + gridName + "</td>"; 
-	 output += "<td>" + compType + "</td>"; 
-	 output += "<td>" + complaint + "</td>"; 
-	 // buttons
-	 //output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>" + "<td><form method='post' action='items.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
-	 //+ "<input name='itemID' type='hidden' value='" + itemID 
-	 //+ "'>" + "</form></td></tr>"; 
-	 } 
-	 con.close(); 
-	 
-	 // Complete the html table
-	 output += "</table>"; 
-	 } 
-	 catch (Exception e) 
-	 { 
-	 output = "Error while reading the items."; 
-	 System.err.println(e.getMessage()); 
-	 } 
-	 return output; 
-	 } 
-	
-	
-/**************************************Insert Maintenance**********************************/
-	
-	
-	
-public String insertMaintenance(String code, String name, String type, String desc, String price) 
- { 
-	String output = "";
-	try {
-	Connection con = DB.connect();
-	
- // create a prepared statement
- String query = " insert into items (`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`)"
- + " values (?, ?, ?, ?, ?)"; 
- PreparedStatement preparedStmt = con.prepareStatement(query); 
- // binding values
- preparedStmt.setInt(1, 0); 
- preparedStmt.setString(2, code); 
- preparedStmt.setString(3, name); 
- preparedStmt.setDouble(4, Double.parseDouble(price)); 
- preparedStmt.setString(5, desc); 
- // execute the statement
-
- preparedStmt.execute(); 
- con.close(); 
- output = "Inserted successfully"; 
- } 
- catch (Exception e) 
- { 
- output = "Error while inserting the item."; 
- System.err.println(e.getMessage()); 
- } 
- return output; 
- } 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import java.sql.*;
 
 
-
-
-/**********************update Maintenance********************/
-public String updateMaintainance(String ID, String code, String name, String type, String desc) 
-
-{ 
-	 String output = ""; 
-	 try
-	 { 
-	 Connection con = DB.connect(); 
-	 if (con == null) 
-	 {return "Error while connecting to the database for updating."; }
-	 
-	 // create a prepared statement
-	 String query = "UPDATE maintainance SET compCode=?,gridName=?,compType=?,compDesc=? WHERE compID=?"; 
-	 PreparedStatement preparedStmt = con.prepareStatement(query); 
-	 
-	 // binding values
-	 preparedStmt.setString(1, code); 
-	 preparedStmt.setString(2, name); 
-	 preparedStmt.setDouble(3, Double.parseDouble(type)); 
-	 preparedStmt.setString(4, desc); 
-	 preparedStmt.setInt(5, Integer.parseInt(ID)); 
-	 
-	 // execute the statement
-	 preparedStmt.execute(); 
-	 con.close(); 
-	 output = "Updated successfully"; 
-	 } 
-	 catch (Exception e) 
-	 { 
-	 output = "Error while updating the item."; 
-	 System.err.println(e.getMessage()); 
-	 } 
-	 return output; 
-	 } 
-
-
-
-		/***************Delete Maintenance********************/
-
-	public String deleteMaintenance(String compID) 
-	 { 
-	 String output = ""; 
-	 try
-	 { 
-	 Connection con = DB.connect(); 
-	 if (con == null) 
-	 {return "Error while connecting to the database for deleting."; } 
-	 
-	 // create a prepared statement
-	 String query = "delete from maintenance where compID=?"; 
-	 PreparedStatement preparedStmt = con.prepareStatement(query); 
-	 
-	 // binding values
-	 preparedStmt.setInt(1, Integer.parseInt(compID));
-	 
-	 // execute the statement
-	 preparedStmt.execute(); 
-	 con.close(); 
-	 output = "Deleted successfully"; 
-	 } 
-	 catch (Exception e) 
-	 { 
-	 output = "Error while deleting the item."; 
-	 System.err.println(e.getMessage()); 
-	 } 
-	 return output; 
-	 }
+public class Maintenance {
 	
+	private static Connection con = null;
 	
-	/***********Getting one detail***************/
-	public String rComp(String branch)
-	 {
-			String output = "";
-			 try
-			 {
-					 Connection con = DB.connect();
-					 
-					 if (con == null)
-					 {return "Error while connecting to the database for reading."; }
-					 
-					 
-					 // Prepare the html table to be displayed
-					 output = "<table border='1'><tr><th>NIC</th><th>Name</th>" +
-					 "<th>DOB</th>" +
-					 "<th>Address</th>" +
-					 "<th>Phone </th>" +
-					 "<th>Salary</th>" +
-					 "<th>Type</th>" +
-					 "<th>Branch</th>";
-				
-					 String query = "select * from Employee where branch='"+branch+"'";
-					 Statement stmt = con.createStatement();
-					 ResultSet rs = stmt.executeQuery(query);
-					 
-					 
-					 // iterate through the rows in the result set
-					 while (rs.next())
-					 {
-					 String nic = rs.getString("nic");
-					 String name = rs.getString("name");
-					 String dob = rs.getString("dob");
-					 String address = rs.getString("address");
-					 String ph = Integer.toString(rs.getInt("phone"));
-					 String sal =Float.toString(rs.getFloat("salary"));
-					 String type = rs.getString("type");
-					 String br = rs.getString("branch");
-					 
-					 
-					 
-					 // Add into the html table
-					 output += "<tr><td>" + nic + "</td>";
-					 output += "<td>" + name + "</td>";
-					 output += "<td>" + dob+ "</td>";
-					 output += "<td>" + address+ "</td>";
-					 output += "<td>" + ph + "</td>";
-					 output += "<td>" + sal + "</td>";
-					 output += "<td>" + type + "</td>";
-					 output += "<td>" + br + "</td></tr>";
-					 
-					 }
-					 con.close();
-					 
-					 // Complete the html table
-					 output += "</table>";
-			 }
-			 catch (Exception e)
-			 {
-				 output = "Error while reading the '"+branch+"'Employee Data.";
-				 System.err.println(e.getMessage());
-			 }
-			 	
-			 
-			 return output;
-	 } 
-	
-	
-	
+	/******************************insert************************************/ 
+	public String insertMaintenance(String id, String area, String gridName, String compType, String complaint) {
+		String output = "";
+		
+		try {
+				con = DB_Connector.connect();
+			
+			if(con == null)
+				return "Database connection failed for inserting data";
+			
+			// create a prepared statement
+			String query = " insert into maintenance (`compID`,`id`,`area`,`gridName`,`compType`,`complaint`)"
+					 + " values (?, ?, ?, ?, ?, ?)";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			// binding values
+			preparedStmt.setInt(1, 0);
+			preparedStmt.setInt(2,Integer.parseInt(id));
+			preparedStmt.setString(3,area);
+			preparedStmt.setString(4,gridName);
+			preparedStmt.setString(5,compType);
+			preparedStmt.setString(6,complaint);
+			
+			
+			// execute the statement
+			preparedStmt.executeUpdate();
+			con.close();
+			output = "Data was successfully inserted";
+		}
+		
+		catch (Exception e)
+		{
+			output = "Error while inserting the maintenance reort details";
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return output;
 	}
+	
+	
+	
+	
+	
+	/*************************Read all the maintenance reports***********************/
+	public String readMaintenance()
+	{
+		String output = "";
+		try
+		{
+			con = DB_Connector.connect();
+			if (con == null)
+				return "Database connection failed for reading data.";
+			
+			// Prepare the html table to be displayed
+			output = "<table border='1'><tr><th>Cutomer ID</th>" +
+					"<th>Area</th><th>Grid Name</th>" +
+					"<th>Complaint Type</th>"
+					+ "<th>Complaint</th></tr>";
+			String query = "select * from maintenance";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next())
+			{
+				String compID = Integer.toString(rs.getInt("compID"));
+				String id = Integer.toString(rs.getInt("id"));
+				String area = rs.getString("area");
+				String gridName = rs.getString("gridName");
+				String compType = rs.getString("compType");
+				String complaint = rs.getString("complaint");
+				
+				
+				// Add into the html table
+				output += "<tr><td>" + id + "</td>";
+				output += "<td>" + area + "</td>";
+				output += "<td>" + gridName + "</td>";
+				output += "<td>" + compType + "</td>";
+				output += "<td>" + complaint + "</td>";
+				
+				// buttons
+				 output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>" + "<td><form method='post' action='items.jsp'>"+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
+				 + "<input name='itemID' type='hidden' value='" + compID 
+				 + "'>" + "</form></td></tr>"; 
+				 }
+				
+			con.close();
+			// Complete the html table
+			output += "</table>";
+			
+		}
+		catch (Exception e)
+		{
+			output = "Error while reading the maintenance details.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+	
+	
+	
+	
+	
+	
+	/*************************************Update********************************/
+	public String updateMaintenance(String compID, String id, String area, String gridName, String compType, String complaint)
+	{
+		String output = "";
+		
+		try
+		{
+			con = DB_Connector.connect();
+			if (con == null)
+				return "Database connection failed for updating data."; 
+			
+			// create a prepared statement
+			String query = "UPDATE maintenance SET id=?,area=?,gridName=?,compType=?,complaint=? WHERE compID=?";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			// binding values
+		
+			preparedStmt.setInt(1, Integer.parseInt(id));
+			preparedStmt.setString(2, area);
+			preparedStmt.setString(3, gridName );
+			preparedStmt.setString(4, compType);
+			preparedStmt.setString(5, complaint);
+			preparedStmt.setInt(6, Integer.parseInt(compID));
+			
+			// execute the statement
+			preparedStmt.execute();
+			con.close();
+			output = "The maintenance data was updated successfully";
+		}
+		catch (Exception e)
+		{
+			output = "Error while updating maintenance report.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+	/***********************************Delete*********************************/
+	public String deleteMaintenance(String ID)
+	{
+		String output = "";
+		
+		try
+		{
+			con = DB_Connector.connect();
+			if (con == null)
+				return "Database connection failed for deleting data."; 
+			
+			// create a prepared statement
+			
+		String query = "delete from maintenance where compID=?";
+		PreparedStatement preparedStmt = con.prepareStatement(query);
+		
+		// binding values
+		preparedStmt.setInt(1, Integer.parseInt(ID));
+		
+		// execute the statement
+		preparedStmt.execute();
+		con.close();
+		output = "maintenance report was deleted successfully";
+	}
+		catch (Exception e)
+		{
+			output = "Error while deleting the power source.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+	/**************Reading Source by the Consumer Id*******************/
+	public JsonObject readMaintainCus(String id)
+	{
+		JsonObject output = null;
+		
+		try
+		{
+			con = DB_Connector.connect();
+			if (con == null) {
+				output=new JsonObject();
+				output.addProperty("MESSAGE", "Database connection failed for reading data.");
+				//return "Database connection failed for reading data.";
+			}
+			//
+			String query = "select * from maintenance where id='"+id+"'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next())
+			{
+				JsonObject dbObject = new JsonObject();
+				dbObject.addProperty("area", rs.getString("area"));
+				dbObject.addProperty("gridName", rs.getString("gridName"));
+				output=dbObject;
+				
+			}
+			con.close();
+			
+		}
+		catch (Exception e)
+		{
+			output=new JsonObject();
+			output.addProperty("MESSAGE","Error while reading the power source details.");
+			//output = "Error while reading the power source details.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+}
