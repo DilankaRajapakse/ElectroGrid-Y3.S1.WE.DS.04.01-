@@ -1,10 +1,10 @@
 package model;
 import java.sql.*;
 
+
 import com.google.gson.JsonObject;
 
 import util.DB_Connector;
-
 
 
 public class Office {
@@ -45,7 +45,7 @@ public class Office {
 			 {
 				
 				
-				System.out.print("insert wenne na mcn");
+			 //System.out.print("errorr insert");
 			 output = "Error while inserting";
 			 System.err.println(e.getMessage());
 			 }
@@ -53,9 +53,7 @@ public class Office {
 			}
 
 
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	//Read data
 	public String readOffice()
 	
 	{
@@ -117,10 +115,10 @@ public class Office {
 		 }
 
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 
 
-
+	//Update data
 	public String updateOffice(String OfficeID, String OfficeName, String OfficeType, String OfficeAddress, String OfficePhoneNumber, String BranchManager)
 
 	{
@@ -150,14 +148,15 @@ public class Office {
 		 catch (Exception e)
 		 {
 			 
-			 System.out.print("Update karanna bariuna");
+		 //System.out.print("errorr Update ");
 		 output = "Error while updating the item.";
 		 System.err.println(e.getMessage());
 		 }
 		 return output;
 		 }
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
+	
+		//Delete data
 		public String deleteOffice(String OfficeID)
 		 {
 		 String output = "";
@@ -187,7 +186,7 @@ public class Office {
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//search
 
 		public String SelectedOffice(String officeid)
 		 {
@@ -201,13 +200,11 @@ public class Office {
 						 
 						 
 						 // Prepare the html table to be displayed
-						 output = "<table border='1'><tr><th>NIC</th><th>Name</th>" +
-						 "<th>DOB</th>" +
-						 "<th>Address</th>" +
-						 "<th>Phone </th>" +
-						 "<th>Salary</th>" +
-						 "<th>Type</th>" +
-						 "<th>Branch</th>"+"Branch Manager";
+						 output = "<table border='1'><tr><th>Office ID</th><th>Office Name</th>" +
+						 "<th>Office Type</th>" +
+						 "<th>Office Address</th>" +
+						 "<th>Phone Number </th>" +
+						 "<th>Branch Manager</th>";
 					
 						 String query = "select * from newofficedb where OfficeID='"+officeid+"'";
 						 Statement stmt = con.createStatement();
@@ -233,11 +230,7 @@ public class Office {
 							 output += "<td>" + OfficePhoneNumber + "</td>";
 							 output += "<td>" + BranchManager + "</td>";
 							 
-							 // buttons
-							 output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>" +
-							 "<td><form method='post' action='/OfficeService/Service/Items/delete'>" + 
-									 "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>" +
-							 "<input name='itemID' type='hidden' value='" + OfficeID + "'>" + "</form></td></tr>"; }
+							}
 							 con.close();
 
 							 // Complete the html table
@@ -269,7 +262,7 @@ public class Office {
 					//return "Database connection failed for reading data.";
 				}
 				//
-				String query = "select * from powersource where Head_Engineer='"+id+"'";
+				String query = "select * from Employee where nic='"+id+"'";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 				
@@ -277,8 +270,8 @@ public class Office {
 				while (rs.next())
 				{
 					JsonObject dbObject = new JsonObject();
-					dbObject.addProperty("name", rs.getString("Name"));
-					dbObject.addProperty("address", rs.getString("Address"));
+					dbObject.addProperty("Name", rs.getString("Name"));
+					dbObject.addProperty("Address", rs.getString("Address"));
 					output=dbObject;
 					
 				}

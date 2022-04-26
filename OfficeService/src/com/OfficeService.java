@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 //For JSON
 import com.google.gson.*;
 
-
+import javax.ws.rs.GET;
 
 //For XML
 import org.jsoup.*;
@@ -30,11 +30,10 @@ public class OfficeService {
 	public String readItems()
 	{
 		return OfficeObj.readOffice();
-	//return "Hello aravinda ";
+	
 	}
 
-	
-	
+		
 	//Insert Office Data
 	@POST
 	@Path("/")
@@ -104,9 +103,9 @@ public class OfficeService {
 		
 	
 	
-	/*Inter-service communication between the employee*/
+	/*Inter-service communication between the employee servise*/
 	@GET
-	@Path("/{Manager_id}")
+	@Path("/Head/{Manager_id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String readEmpSource(@PathParam("Manager_id") String id) {
 		
@@ -127,6 +126,8 @@ public class OfficeService {
 		 return (new InterServiceCommunication().EmployeeDetails("/" + id)).toString();
 		 
 	}
+	
+	
 	
 	
 	}

@@ -13,7 +13,7 @@ public class DB_Connector {
 	 Class.forName("com.mysql.jdbc.Driver");
 
 	 //Provide the correct details: DBServer/DBName, username, password
-	 con = DriverManager.getConnection("jdbc:mysql://localhost:3307/ElectroGrid", "root", "");
+	 con = DriverManager.getConnection("jdbc:mysql://localhost:3307/newofficedb", "root", "");
 	 System.out.print("Successfully connected");
 	 }
 	 catch (Exception e)
