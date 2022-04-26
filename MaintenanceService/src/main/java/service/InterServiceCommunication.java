@@ -12,7 +12,8 @@ public class InterServiceCommunication {
 			private static final String HOST = "127.0.0.1";
 			private static final String PORT = "8080";
 			private static final String CONSUMER_SERVICE_URI = PROTOCOL + HOST + ":" + PORT + "/ConsumerService/ElectroGrid/Consumers/id";
-		
+			private static final String SERVICE_TOKEN="Basic dXNlcjpwYXNzd29yZA==";
+			
 		public JsonObject CustomerDetails(String path) {
 			
 			
@@ -20,8 +21,8 @@ public class InterServiceCommunication {
 				Client client = Client.create();
 
 				WebResource webResource = client.resource(CONSUMER_SERVICE_URI+path);
-
-				ClientResponse response = webResource.accept("application/json")
+				String output=webResource.header("Authorization", SERVICE_TOKEN).get(String.class);
+				/*ClientResponse response = webResource.accept("application/json")
 		                   .get(ClientResponse.class);
 
 				if (response.getStatus() != 200) {
@@ -29,7 +30,7 @@ public class InterServiceCommunication {
 					+ response.getStatus());
 				}
 
-				String output = response.getEntity(String.class);
+				String output = response.getEntity(String.class);*/
 
 				
 				
