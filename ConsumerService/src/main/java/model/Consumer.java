@@ -1,6 +1,8 @@
 package model;
 
-import java.sql.*; 
+import java.sql.*;
+
+import com.google.gson.JsonObject; 
 
 public class Consumer {
 	private Connection connect() { 
@@ -194,4 +196,40 @@ public class Consumer {
 	 
 	 return output; 
 	 } 
+	
+	
+	/*Reading complaints by ID*/	
+	public JsonObject readComp(String id) { //check
+		JsonObject output = null;
+		
+		try {
+			Connection con = connect();
+			if (con == null) {
+				output=new JsonObject();
+				output.addProperty("MESSAGE", "Database connection failed for reading consumer data.");
+				//return "Database connection failed for reading data.";
+			}
+			
+			String query = "select * from consumers where id='"+id+"'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next()) {
+				JsonObject dbObject = new JsonObject();
+				dbObject.addProperty("Consumer Name", rs.getString("name"));
+				dbObject.addProperty("Consumer Address", rs.getString("address"));
+						
+				output=dbObject;				
+			}
+			con.close();			
+		}
+		catch (Exception e) {
+			output=new JsonObject();
+			output.addProperty("MESSAGE","Error while reading the complaint details.");
+			//output = "Error while reading the complaint details.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 }

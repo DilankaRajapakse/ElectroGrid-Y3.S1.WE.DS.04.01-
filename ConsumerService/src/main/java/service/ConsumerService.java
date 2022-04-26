@@ -77,6 +77,54 @@ public class ConsumerService {
 	//Read the value from the element <id>
 	 String id = doc.select("id").text();
 	 String output = consumerObj.deleteConsumer(id); 
-	 return output; 
+	 return output;  
 	}
+		
+		//Note use for Inter Service Communication for Getting consumer Data by providing consumer id
+		@GET
+		@Path("/{compID}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public String readCompSource(@PathParam("compID") String compID) {		
+			JsonObject result = null;
+			
+			result = consumerObj.readComp(compID);
+			return result.toString();		
+		}
+		
+			//http://localhost:8080/ConsumerService/ElectroGrid/Consumer/ConsumerMaintain/3
+			//Do not use the Below function
+			//Inter service Communication for Maintenance
+			@GET
+			@Path("/ConsumerMaintain/{id}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public String readComplaint(@PathParam("id") String id) {		 
+				 return (new InterServiceCom().Maintenance("/" + id)).toString();
+			}
+			
+		/*
+		//Note use for Inter Service Communication for Getting Employee Data by providing NIC
+		@GET
+		@Path("/{id}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public String readCompSource(@PathParam("id") String id) {
+			
+			JsonObject result = null;
+			
+			result=consumerObj.readComp(id);
+			return result.toString();
+			
+		}
+			
+		//Do not use the Below fucntion
+		//************************Inter-Service Communication for Power Source
+		@GET
+		@Path("/ConsumerMaintain/{id}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public String readSource(@PathParam("eng") String id)
+		 {
+		
+			 return (new InterServiceCom().PowerSource("/" + id)).toString();
+			 //return emp.rEmp(br);
+		} */
+	
 }
