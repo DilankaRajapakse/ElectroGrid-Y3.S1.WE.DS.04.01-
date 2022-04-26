@@ -91,40 +91,12 @@ public class ConsumerService {
 			return result.toString();		
 		}
 		
-			//http://localhost:8080/ConsumerService/ElectroGrid/Consumer/ConsumerMaintain/3
-			//Do not use the Below function
-			//Inter service Communication for Maintenance
-			@GET
-			@Path("/ConsumerMaintain/{id}")
-			@Produces(MediaType.APPLICATION_JSON)
-			public String readComplaint(@PathParam("id") String id) {		 
-				 return (new InterServiceCom().Maintenance("/" + id)).toString();
-			}
-			
-		/*
-		//Note use for Inter Service Communication for Getting Employee Data by providing NIC
-		@GET
-		@Path("/{id}")
-		@Produces(MediaType.APPLICATION_JSON)
-		public String readCompSource(@PathParam("id") String id) {
-			
-			JsonObject result = null;
-			
-			result=consumerObj.readComp(id);
-			return result.toString();
-			
-		}
-			
-		//Do not use the Below fucntion
-		//************************Inter-Service Communication for Power Source
+		//http://localhost:8080/ConsumerService/ElectroGrid/Consumer/ConsumerMaintain/3
+		//Inter service Communication for Maintenance
 		@GET
 		@Path("/ConsumerMaintain/{id}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public String readSource(@PathParam("eng") String id)
-		 {
-		
-			 return (new InterServiceCom().PowerSource("/" + id)).toString();
-			 //return emp.rEmp(br);
-		} */
-	
+		public String readComplaint(@PathParam("id") String id) {		 
+			return (new InterServiceCom().Maintenance("/" + id)).toString();
+		}	
 }
